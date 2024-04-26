@@ -1,0 +1,105 @@
+ <style>
+
+
+        .fas{
+            font-size: 20px;
+        }
+        .fa-edit:hover{
+            color: green;
+        }
+        .fa-trash:hover{
+            color: red;
+        }
+
+    .primary-background{
+    background: #acafb8 !important;
+}
+
+    .secondary-background{
+    
+    background: #151619;
+}
+    .form-steps{
+        
+        color:#f7c31d !important;
+        
+    }
+
+.date-time{
+        font-size: 12px;
+        color:#181c21;
+    }
+    .secondary-heading{
+        
+        color:white;
+        font-size: 16px;
+        text-transform: uppercase;
+    }
+    
+.btn-primary{
+    
+    background: #f7c31d !important;
+        border:none !important;
+color:#191b20 !important;
+    width: 100%;
+}
+
+::placeholder{
+    
+    color:#191b20 !important;
+}
+
+body{
+    
+    font-family: "Montserrat", sans-serif !important;
+}
+
+.carousel-item {
+       height: 490px; /* Adjust the height as needed */
+transition:transform .6s ease-out !important;
+    }
+
+a.carousel-control-next{
+    
+    left: 100%;
+}
+
+a.carousel-control-prev{
+    
+    left: -14%;
+}
+
+.carousel-indicators [data-target]{
+    
+    width: 16px !important;
+    height:16px !important;
+    border-radius: 100%;  
+    background-color: #f7c31d !important;
+}
+
+
+.insert_trim_length {
+    display: grid;
+    row-gap: 16px;
+}
+
+.trims_length{
+    
+    display: flex;
+    gap:16px;
+}
+
+th{
+    text-align: left;
+}
+
+td{
+    text-align: left;
+font-family: helvetica;
+    font-weight: 500;
+}
+</style>
+
+
+
+
