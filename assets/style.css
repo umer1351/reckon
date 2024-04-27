@@ -1,7 +1,14 @@
  <style>
 
 
-        .fas{
+.logo-width{
+    width:200px;
+}
+
+.height-bg{
+    height:16px;  background:#343a3f;
+}
+.fas{
             font-size: 20px;
         }
         .fa-edit:hover{
