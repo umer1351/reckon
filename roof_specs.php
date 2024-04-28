@@ -77,7 +77,8 @@
                                     
                                     while ($row_sku = $result_sku->fetch_assoc()) { ?>
                                         
-                                        <option value="<?php echo $row_sku['size'] ?>" data-id="<?php echo $row_sku['id'] ?>" data-combined="<?php echo $row_sku['combined_shortcode'] ?>">
+                                        <option value="<?php echo $row_sku['size'] ?>" data-id="<?php echo $row_sku['id'] ?>" data-combined="<?php echo $row_sku['combined_shortcode'] ?>" 
+                                            data-screw="<?php echo $row_sku['screw_values'] ?>">
 
                                             <?php echo $row_sku['name'] ?>
                                             
@@ -159,7 +160,7 @@
                                         $result_vent = $link->query($sql_vent);
                                         while ($row_vent = $result_vent->fetch_assoc()) { ?>
                                        
-                                        <option value="<?php echo $row_vent['id'] ?>" >
+                                        <option value="<?php echo $row_vent['name'] ?>" >
                                             
                                             <?php echo $row_vent['name'] ?>
                                                 
@@ -172,14 +173,14 @@
 
                         <div class="form-group">
                             <select class="form-control primary-background border-0" id="fastnerType" name="fastnerType" required>
-                                <option value="1">Fastner Type</option>
+                                <option value="">Fastner Type</option>
                                 <?php $sql_fastner = "SELECT * FROM fastner_types";
 
                                     $result_fastner = $link->query($sql_fastner);
                                     
                                     while ($row_fastner = $result_fastner->fetch_assoc()) { ?>
                                     
-                                    <option value="<?php echo $row_fastner['id'] ?>" >
+                                    <option value="<?php echo $row_fastner['name'] ?>" >
                                         <?php echo $row_fastner['name'] ?>
                                             
                                     </option>  
@@ -482,7 +483,13 @@ async function updateData() {
         total += await processComponent('hip', 'HC');
 
         
-        total += await processComponent('Vented', 'Vented');
+        total += await processVented('Vented', 'Vented');
+
+        
+        total += await processFastner('fastnerType', 'fastnerType');
+        
+        
+        total += await processTileSealent('paints', 'paints');
 
 
         // Update total in the UI
@@ -492,8 +499,155 @@ async function updateData() {
     }
 }
 
+async function processTileSealent(componentId, codeHeading) {
+    var profilePanel = document.getElementById('panel_profile');
+    var selectedOptionProfilePanel = profilePanel.options[profilePanel.selectedIndex];
+    var selectedValueProfilePanel = selectedOptionProfilePanel.value;
+    var selectedDataIdProfilePanel = selectedOptionProfilePanel.getAttribute('data-id');
+    var selectedCombinedProfilePanel = selectedOptionProfilePanel.getAttribute('data-combined');
+    var selectedScrewValue = selectedOptionProfilePanel.getAttribute('data-screw');
+    var va = selectedValueProfilePanel / 12;
+    var request = sizeOfRoof.value / va;
+    var qty = parseFloat(request);
+    var userInput = $('#paints').val();
+    var profilePanelSize = $('#panel_profile').val();
+
+        
+       var  sealentQty =    calculateSealentQty(qty,);
+    
+         sealentQty = roundNumber(sealentQty);
+
+        
+            var response = await fetchProfileCode(selectedDataIdProfilePanel, codeHeading);
+           
+            if (response.success) {
+                if(userInput == 'MGA'){
+                    var sku = response.code+userInput;
+                }else{
+                    var sku = response.code+'TLS';
+                }
+                
+                   
+                var totalPriceResponse = await fetchReceiptValue(sku, sealentQty);
+
+                if (totalPriceResponse.success) {
+                    var totalPrice = parseFloat(totalPriceResponse.totalPrice);
+                    appendDataRow(sealentQty, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
+                    return totalPrice;
+                } else {
+
+                    console.error('Failed to fetch item data for ' + componentId);
+                }
+            } else {
+                console.error('Failed to fetch profile code for ' + componentId);
+            }
+         
+   
+
+    return 0;
+}
+
+
+async function processVented(componentId, codeHeading) {
+
+    var userInput = $('#ridge').val()*12;
+    var profilePanelSize = $('#panel_profile').val();
+        userInput=userInput*2;
+    var qty =    userInput/profilePanelSize;
+    if (userInput) {
+        qty = roundNumber(qty);
+        var profilePanel = document.getElementById('panel_profile');
+        var selectedOptionProfilePanel = profilePanel.options[profilePanel.selectedIndex];
+        var selectedDataIdProfilePanel = selectedOptionProfilePanel.getAttribute('data-id')
+
+        try {
+            var response = await fetchProfileCode(selectedDataIdProfilePanel, codeHeading);
+           
+            if (response.success) {
+                var sku = response.code
+
+                var totalPriceResponse = await fetchReceiptValue(sku, qty);
+
+                if (totalPriceResponse.success) {
+                    var totalPrice = parseFloat(totalPriceResponse.totalPrice);
+                    appendDataRow(qty, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
+                    return totalPrice;
+                } else {
+
+                    console.error('Failed to fetch item data for ' + componentId);
+                }
+            } else {
+                console.error('Failed to fetch profile code for ' + componentId);
+            }
+        } catch (error) {
+
+            // console.error('Error:', error);
+            // var newRow = '<tr style="color:red;">';
+            // newRow += '<td>-</td>';
+            // newRow += '<td>-</td>';
+            // newRow += '<td>-</td>';
+            // newRow += '<td>-</td>';
+            // newRow += '<td>-</td>';
+            // newRow += '</tr>';
+
+            // // Append the new row to the table body
+            // $('#dataBody').append(newRow);
+        }
+    }
+
+    return 0;
+}
+
+function calculateCeiling(screw_value, qty) {
+    return Math.ceil(screw_value * qty / 250) * 250;
+}
+
+
+function calculateSealentQty(sealent_value) {
+    return Math.ceil(sealent_value  / 200) ;
+}
+
+async function processFastner(componentId, codeHeading) {
+
+    var profilePanel = document.getElementById('panel_profile');
+    var selectedOptionProfilePanel = profilePanel.options[profilePanel.selectedIndex];
+    var selectedValueProfilePanel = selectedOptionProfilePanel.value;
+    var selectedDataIdProfilePanel = selectedOptionProfilePanel.getAttribute('data-id');
+    var selectedCombinedProfilePanel = selectedOptionProfilePanel.getAttribute('data-combined');
+    var selectedScrewValue = selectedOptionProfilePanel.getAttribute('data-screw');
+    var va = selectedValueProfilePanel / 12;
+    var request = sizeOfRoof.value / va;
+    var qty = parseInt(request);
+    var screwQty = calculateCeiling(selectedScrewValue,qty);
+    
+    var userInput = $('#' + componentId).val();
+    var color = $('#colors').val();
+    if (userInput) {
+        screwQty = roundNumber(screwQty);
+        var response = await fetchProfileCode(selectedDataIdProfilePanel, userInput);
+        var profileCode = response.code;
+        var sku = profileCode+color;
+               
+                var totalPriceResponse = await fetchReceiptValue(sku, screwQty);
+
+                if (totalPriceResponse.success) {
+                    var totalPrice = parseFloat(totalPriceResponse.totalPrice);
+                    appendDataRow(screwQty, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
+                    return totalPrice;
+                } else {
+
+                    console.error('Failed to fetch item data for ' + componentId);
+                }
+           
+       
+    }
+
+    return 0;
+}
+
 async function processComponent(componentId, codeHeading) {
     var userInput = $('#' + componentId).val();
+   
     var qty = (1 + 10 / 100) * (userInput / 10);
 
     if (userInput) {
@@ -509,9 +663,9 @@ async function processComponent(componentId, codeHeading) {
                 var sku = profileCode + guage.value + color_code.value;
 
                 var totalPriceResponse = await fetchReceiptValue(sku, qty);
-
+                // alert(totalPriceResponse.price);
                 if (totalPriceResponse.success) {
-                    var totalPrice = parseInt(totalPriceResponse.totalPrice);
+                    var totalPrice = parseFloat(totalPriceResponse.totalPrice);
                     appendDataRow(qty, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
                     return totalPrice;
                 } else {
@@ -526,7 +680,7 @@ async function processComponent(componentId, codeHeading) {
             // console.error('Error:', error);
             var newRow = '<tr style="color:red;">';
             newRow += '<td>-</td>';
-            newRow += '<td>-</td>';
+            newRow += '<td>'+sku+'</td>';
             newRow += '<td>-</td>';
             newRow += '<td>-</td>';
             newRow += '<td>-</td>';
@@ -635,6 +789,10 @@ async function fetchInitialRow() {
                 $('#dataBody').append(newRow);
 
                 total += parseFloat(response.totalPrice);
+
+
+
+
             
         } else {
             
