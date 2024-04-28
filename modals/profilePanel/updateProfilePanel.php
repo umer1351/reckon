@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
         <!-- Form for updating SKU -->
-        <form action="update_sku.php" method="POST">
+        <form  id="updateSku" method="POST">
           <div class="form-group">
             <label for="update_name">Dimensional Name</label>
             <input type="text" class="form-control" id="update_name" name="update_name" required>
@@ -29,7 +29,7 @@
           </div>
           <!-- Add other necessary fields here -->
           <input type="hidden" id="update_id" name="update_id">
-          <button type="button" class="btn btn-primary" onclick="updateSku()">Update SKU</button>
+          <button type="submit" class="btn btn-primary">Update SKU</button>
         </form>
       </div>
     </div>

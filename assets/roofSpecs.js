@@ -75,6 +75,44 @@ $(document).ready(function() {
         });
     });
 
+    $('#addSku').submit(function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        ajaxRequest('php/profilePanel/addSku.php', 'POST', formData, function(response) {
+            $('#addSkuModal').modal('hide');
+            location.reload();
+        }, function(xhr, status, error) {
+            console.error(error);
+        });
+    });
+
+    $('#updateSku').submit(function(e) {
+        e.preventDefault();
+        var formData = $(this).serialize();
+        ajaxRequest('php/profilePanel/updateSku.php', 'POST', formData, function(response) {
+            $('#updateSkuModal').modal('hide');
+            location.reload();
+        }, function(xhr, status, error) {
+            console.error(error);
+        });
+    });
+
+    $('.delete-sku').click(function(e) {
+        e.preventDefault();
+        var profileCodeId = $(this).data('id');
+        if(confirm("Are you sure you want to delete this profile code?")) {
+            ajaxRequest('php/profilePanel/deleteSku.php', 'POST', { id: profileCodeId }, function(response) {
+                location.reload();
+            }, function(xhr, status, error) {
+                console.error(error);
+                alert("Error deleting profile code. Please try again.");
+            });
+        }
+    });
+
+   
+
+
     // Fetch profile panels when adding profile code modal is shown
     $('#addProfileCodeModal').on('show.bs.modal', fetchProfilePanels);
 });

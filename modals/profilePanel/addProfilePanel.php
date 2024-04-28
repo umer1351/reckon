@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
         <!-- Form for adding SKU -->
-        <form action="add_sku.php" method="POST">
+        <form id="addSku" method="POST">
           <div class="form-group">
             <label for="name">Dimensional Name</label>
             <input type="text" class="form-control" id="name" name="name" required>
@@ -28,7 +28,7 @@
             <input type="text" class="form-control" id="size" name="size" required>
           </div>
           <!-- Add other necessary fields here -->
-          <button type="button" class="btn btn-primary" onclick="addSku(1)">Add SKU</button>
+           <button type="submit" class="btn btn-primary">Add SKU</button>
         </form>
       </div>
     </div>

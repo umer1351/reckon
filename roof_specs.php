@@ -152,8 +152,8 @@
                 
                     
                         <div class="form-group">
-                            <select class="form-control primary-background border-0" id="ventedRidge" name="ventedRidge" required>
-                                <option value="1">Vented Ridge</option>
+                            <select class="form-control primary-background border-0" id="Vented" name="ventedRidge" required>
+                                <option value="Vented">Vented Ridge</option>
                                     <?php   $sql_vent = "SELECT * FROM vented_ridges";
 
                                         $result_vent = $link->query($sql_vent);
@@ -386,11 +386,10 @@
 <script type="text/javascript">
     
 
-    $(document).ready( function () {
         $('#profile_panel').DataTable({
             pageLength : 20
         });
-    } );
+  
     
         var companyName = document.getElementById("company");
         var jobName = document.getElementById("jobName");
@@ -415,69 +414,36 @@
         var paint = document.getElementById("paints");
         var color_code = document.getElementById("colors");
 
-        // Add an input event listener to the input field
-        companyName.addEventListener("input", function() {
-            // Update the content of the paragraph with the input field value
-            companyNameP.textContent = companyName.value;
-
-        });
-        jobName.addEventListener("input", function() {
-            // Update the content of the paragraph with the input field value
-            jobNameP.textContent = jobName.value;
-
-        });
-        jobAddress.addEventListener("input", function() {
-            // Update the content of the paragraph with the input field value
-            jobAddressP.textContent = jobAddress.value + ',';
-
-        });
-        city.addEventListener("input", function() {
-            // Update the content of the paragraph with the input field value
-            cityP.textContent = city.value + ',';
-
-        });
-    
-        state.addEventListener("input", function() {
-            // Update the content of the paragraph with the input field value
-            stateP.textContent = state.value + ',';
-
-        });
-    
-        zip.addEventListener("input", function() {
-            // Update the content of the paragraph with the input field value
-            zipP.textContent = zip.value;
-
-        });
+       
 
 
-        $(document).ready(function() {
-            $('#paints').change(function() {
+        $('#paints').change(function() {
 
-            var paint = document.getElementById('paints');
-            var selectedPaint = paint.options[paint.selectedIndex];
-            var selectedPaintID = selectedPaint.getAttribute('data-paint');
-                var paintId = selectedPaintID;
-                $.ajax({
-                    url: 'php/getPaintColor.php',
-                    type: 'POST',
-                    data: { paint_id: paintId },
-                    dataType: 'json', // Specify JSON as the expected response type
-                    success: function(response) {
-                        $('#colors').empty(); // Clear previous options
-                        $.each(response, function(index, color) {
-                            $('#colors').append($('<option>', {
-                                value: color.color_code,
-                                text: color.color,
-                                'data-color-code': color.color_code // Use data attribute to store color code
-                            }));
-                        });
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
+        var paint = document.getElementById('paints');
+        var selectedPaint = paint.options[paint.selectedIndex];
+        var selectedPaintID = selectedPaint.getAttribute('data-paint');
+            var paintId = selectedPaintID;
+            $.ajax({
+                url: 'php/getPaintColor.php',
+                type: 'POST',
+                data: { paint_id: paintId },
+                dataType: 'json', // Specify JSON as the expected response type
+                success: function(response) {
+                    $('#colors').empty(); // Clear previous options
+                    $.each(response, function(index, color) {
+                        $('#colors').append($('<option>', {
+                            value: color.color_code,
+                            text: color.color,
+                            'data-color-code': color.color_code // Use data attribute to store color code
+                        }));
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
             });
         });
+  
 
        
  
@@ -488,6 +454,10 @@ async function updateData() {
 
     try {
         // Process eave
+
+
+        total += await fetchInitialRow();
+
         total += await processComponent('eave', 'ED');
 
         // Process valley
@@ -510,6 +480,10 @@ async function updateData() {
 
         // Process hip
         total += await processComponent('hip', 'HC');
+
+        
+        total += await processComponent('Vented', 'Vented');
+
 
         // Update total in the UI
         updateTotalInUI(total);
@@ -538,16 +512,28 @@ async function processComponent(componentId, codeHeading) {
 
                 if (totalPriceResponse.success) {
                     var totalPrice = parseInt(totalPriceResponse.totalPrice);
-                    appendDataRow(qty, sku, totalPriceResponse.description, totalPrice);
+                    appendDataRow(qty, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
                     return totalPrice;
                 } else {
+
                     console.error('Failed to fetch item data for ' + componentId);
                 }
             } else {
                 console.error('Failed to fetch profile code for ' + componentId);
             }
         } catch (error) {
-            console.error('Error:', error);
+
+            // console.error('Error:', error);
+            var newRow = '<tr style="color:red;">';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '</tr>';
+
+            // Append the new row to the table body
+            $('#dataBody').append(newRow);
         }
     }
 
@@ -586,16 +572,92 @@ async function fetchReceiptValue(sku, request) {
     });
 }
 
-function appendDataRow(qty, sku, description, totalPrice) {
-    var newRow = '<tr>';
-    newRow += '<td>' + qty + '</td>';
-    newRow += '<td>' + sku + '</td>';
-    newRow += '<td>' + description + '</td>';
-    newRow += '<td></td>'; // Price column, to be fetched via AJAX
-    newRow += '<td class="price">' + roundToTwoDecimalPlaces(totalPrice) + '</td>';
-    newRow += '</tr>';
+function appendDataRow(qty, sku, description, price, totalPrice) {
+    if (description != null) {
+        var newRow = '<tr>';
+        newRow += '<td>' + qty + '</td>';
+        newRow += '<td>' + sku + '</td>';
+        newRow += '<td>' + description + '</td>';
+        newRow += '<td>' + price + '</td>';
+        newRow += '<td class="price">' + roundToTwoDecimalPlaces(totalPrice) + '</td>';
+        newRow += '</tr>';
 
-    $('#dataBody').append(newRow);
+        $('#dataBody').append(newRow);
+    }else{
+         var newRow = '<tr style="color:red;">';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '</tr>';
+
+            // Append the new row to the table body
+            $('#dataBody').append(newRow);
+    }
+}
+
+async function fetchInitialRow() {
+    var total = 0;
+
+    var profilePanel = document.getElementById('panel_profile');
+    var selectedOptionProfilePanel = profilePanel.options[profilePanel.selectedIndex];
+    var selectedValueProfilePanel = selectedOptionProfilePanel.value;
+    var selectedDataIdProfilePanel = selectedOptionProfilePanel.getAttribute('data-id');
+    var selectedCombinedProfilePanel = selectedOptionProfilePanel.getAttribute('data-combined');
+    var va = selectedValueProfilePanel / 12;
+    var request = sizeOfRoof.value / va;
+    var digitsOnly = parseInt(request);
+    var sku = selectedCombinedProfilePanel + guage.value + color_code.value;
+
+    try {
+        var response = await $.ajax({
+            type: 'POST',
+            url: 'php/getRecieptValue.php',
+            data: {
+                sku: sku,
+                request: digitsOnly
+            },
+            dataType: 'json'
+        });
+
+        if (response.success) {
+         
+                var newRow = '<tr>';
+                newRow += '<td>' + digitsOnly + '</td>';
+                newRow += '<td>' + sku + '</td>';
+                newRow += '<td>' + response.description + '</td>';
+                newRow += '<td>' + response.price + '</td>';
+                newRow += '<td>' + roundToTwoDecimalPlaces(response.totalPrice) + '</td>';
+                newRow += '</tr>';
+
+                // Append the new row to the table body
+                $('#dataBody').append(newRow);
+
+                total += parseFloat(response.totalPrice);
+            
+        } else {
+            
+
+            throw new Error('Failed to fetch initial row');
+        }
+    } catch (error) {
+       
+        // console.error('Error fetching initial row:', error);
+        // throw error;
+         var newRow = '<tr style="color:red;">';
+                newRow += '<td>-</td>';
+                newRow += '<td>-</td>';
+                newRow += '<td>-</td>';
+                newRow += '<td>-</td>';
+                newRow += '<td>-</td>';
+                newRow += '</tr>';
+
+                // Append the new row to the table body
+                $('#dataBody').append(newRow);
+    }
+
+    return total;
 }
 
 function updateTotalInUI(total) {
