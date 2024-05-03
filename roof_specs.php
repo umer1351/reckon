@@ -25,6 +25,7 @@
                     <li data-target="#carouselExampleControls" data-slide-to="0" class="active"></li>
                     <li data-target="#carouselExampleControls" data-slide-to="1"></li>
                     <li data-target="#carouselExampleControls" data-slide-to="2"></li>
+                    <li data-target="#carouselExampleControls" data-slide-to="3"></li>
                 </ol>
 
 
@@ -231,6 +232,173 @@
                       
                         
                         <button id="displayDataBtn" class="btn btn-primary" >Calculate</button>
+
+                    </div>
+                    <div class="carousel-item">
+
+                        <h4 class="justify-content-left secondary-heading mb-md-3 fs-5"> <span class="form-steps">STEP 4:</span> MISC Options</h4>
+
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-9">
+                                    <select class="form-control primary-background border-0" id="misc-dropdown1" name="panel_profile" required>
+                                        <option value=""></option>
+                               
+                                    
+                                        <?php $sql_misc = "SELECT * FROM misc_data";
+                                        $result_misc = $link->query($sql_misc);
+                                        
+                                        while ($row_misc = $result_misc->fetch_assoc()) { ?>
+                                            
+                                            <option value="<?php echo $row_misc['name'] ?>" >
+
+                                                <?php echo $row_misc['name'] ?>
+                                                
+                                            </option>  
+                                        
+                                        <?php } ?>  
+                                    
+                                     </select>
+                                </div>
+                                <div class="col-3">
+                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value="2000" id="misc-input1" name="input2" required>
+
+                                </div>
+                                
+                            </div>
+                            
+                        
+                            
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-9">
+                                    <select class="form-control primary-background border-0" id="misc-dropdown2" name="panel_profile" required>
+                                        <option value=""></option>
+                               
+                                    
+                                        <?php $sql_misc = "SELECT * FROM misc_data";
+                                        $result_misc = $link->query($sql_misc);
+                                        
+                                        while ($row_misc = $result_misc->fetch_assoc()) { ?>
+                                            
+                                            <option value="<?php echo $row_misc['name'] ?>" >
+
+                                                <?php echo $row_misc['name'] ?>
+                                                
+                                            </option>  
+                                        
+                                        <?php } ?>  
+                                    
+                                     </select>
+                                </div>
+                                <div class="col-3">
+                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value="2000" id="misc-input2" name="input2" required>
+
+                                </div>
+                                
+                            </div>
+                            
+                        
+                            
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-9">
+                                    <select class="form-control primary-background border-0" id="misc-dropdown3" name="panel_profile" required>
+                                        <option value=""></option>
+                               
+                                    
+                                        <?php $sql_misc = "SELECT * FROM misc_data";
+                                        $result_misc = $link->query($sql_misc);
+                                        
+                                        while ($row_misc = $result_misc->fetch_assoc()) { ?>
+                                            
+                                            <option value="<?php echo $row_misc['name'] ?>" >
+
+                                                <?php echo $row_misc['name'] ?>
+                                                
+                                            </option>  
+                                        
+                                        <?php } ?>  
+                                    
+                                     </select>
+                                </div>
+                                <div class="col-3">
+                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value="2000" id="misc-input3" name="input2" required>
+
+                                </div>
+                                
+                            </div>
+                            
+                        
+                            
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-9">
+                                    <select class="form-control primary-background border-0" id="misc-dropdown4" name="panel_profile" required>
+                                        <option value=""></option>
+                               
+                                    
+                                        <?php $sql_misc = "SELECT * FROM misc_data";
+                                        $result_misc = $link->query($sql_misc);
+                                        
+                                        while ($row_misc = $result_misc->fetch_assoc()) { ?>
+                                            
+                                            <option value="<?php echo $row_misc['name'] ?>" >
+
+                                                <?php echo $row_misc['name'] ?>
+                                                
+                                            </option>  
+                                        
+                                        <?php } ?>  
+                                    
+                                     </select>
+                                </div>
+                                <div class="col-3">
+                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value="2000" id="misc-input4" name="input2" required>
+
+                                </div>
+                                
+                            </div>
+                            
+                        
+                            
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-9">
+                                    <select class="form-control primary-background border-0" id="misc-dropdown5" name="panel_profile" required>
+                                        <option value=""></option>
+                               
+                                    
+                                        <?php $sql_misc = "SELECT * FROM misc_data";
+                                        $result_misc = $link->query($sql_misc);
+                                        
+                                        while ($row_misc = $result_misc->fetch_assoc()) { ?>
+                                            
+                                            <option value="<?php echo $row_misc['name'] ?>" >
+
+                                                <?php echo $row_misc['name'] ?>
+                                                
+                                            </option>  
+                                        
+                                        <?php } ?>  
+                                    
+                                     </select>
+                                </div>
+                                <div class="col-3">
+                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value="2000" id="misc-input5" name="input2" required>
+
+                                </div>
+                                
+                            </div>
+                            
+                        
+                            
+                        </div>
+                        
 
                     </div>
                 
@@ -444,6 +612,8 @@
                 }
             });
         });
+
+        
   
 
        
@@ -491,12 +661,63 @@ async function updateData() {
         
         total += await processTileSealent('paints', 'paints');
 
+        total += await processMisc('misc-dropdown1', 'CH');
+
+        total += await processMisc('misc-dropdown2', 'CH');
+        total += await processMisc('misc-dropdown3', 'CH');
+        total += await processMisc('misc-dropdown4', 'CH');
+        total += await processMisc('misc-dropdown5', 'CH');
 
         // Update total in the UI
         updateTotalInUI(total);
     } catch (error) {
         console.error('Error:', error);
     }
+}
+
+async function processMisc(componentId, codeHeading) {
+    var profilePanel = document.getElementById('panel_profile');
+    var selectedOptionProfilePanel = profilePanel.options[profilePanel.selectedIndex];
+    var selectedValueProfilePanel = selectedOptionProfilePanel.value;
+    var selectedDataIdProfilePanel = selectedOptionProfilePanel.getAttribute('data-id');
+    var selectedCombinedProfilePanel = selectedOptionProfilePanel.getAttribute('data-combined');
+    var selectedScrewValue = selectedOptionProfilePanel.getAttribute('data-screw');
+    var va = selectedValueProfilePanel / 12;
+    var request = sizeOfRoof.value / va;
+    var qty = parseFloat(request);
+    var userInput = $('#misc-input1').val();
+    var profilePanelSize = $('#panel_profile').val();
+    var guage = $('#guage').val();
+    var colors = $('#colors').val();
+        
+       var  sealentQty =    calculateSealentQty(qty,);
+    
+         sealentQty = roundNumber(sealentQty);
+
+        
+            var response = await fetchProfileCode(selectedDataIdProfilePanel, codeHeading);
+           
+            if (response.success) {
+                var sku = response.code+guage+colors;
+                
+                   
+                var totalPriceResponse = await fetchReceiptValue(sku, userInput);
+
+                if (totalPriceResponse.success) {
+                    var totalPrice = parseFloat(totalPriceResponse.totalPrice);
+                    appendDataRow(userInput, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
+                    return totalPrice;
+                } else {
+
+                    console.error('Failed to fetch item data for ' + componentId);
+                }
+            } else {
+                console.error('Failed to fetch profile code for ' + componentId);
+            }
+         
+   
+
+    return 0;
 }
 
 async function processTileSealent(componentId, codeHeading) {
@@ -681,7 +902,7 @@ async function processComponent(componentId, codeHeading) {
             var newRow = '<tr style="color:red;">';
             newRow += '<td>-</td>';
             newRow += '<td>'+sku+'</td>';
-            newRow += '<td>-</td>';
+            newRow += '<td>Call For Pricing</td>';
             newRow += '<td>-</td>';
             newRow += '<td>-</td>';
             newRow += '</tr>';
@@ -740,8 +961,8 @@ function appendDataRow(qty, sku, description, price, totalPrice) {
     }else{
          var newRow = '<tr style="color:red;">';
             newRow += '<td>-</td>';
-            newRow += '<td>-</td>';
-            newRow += '<td>-</td>';
+            newRow += '<td>'+sku+'</td>';
+            newRow += '<td>Call For Pricing</td>';
             newRow += '<td>-</td>';
             newRow += '<td>-</td>';
             newRow += '</tr>';
@@ -805,8 +1026,8 @@ async function fetchInitialRow() {
         // throw error;
          var newRow = '<tr style="color:red;">';
                 newRow += '<td>-</td>';
-                newRow += '<td>-</td>';
-                newRow += '<td>-</td>';
+                newRow += '<td>'+sku+'</td>';
+                newRow += '<td>Call For Pricing</td>';
                 newRow += '<td>-</td>';
                 newRow += '<td>-</td>';
                 newRow += '</tr>';
