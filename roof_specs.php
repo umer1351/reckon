@@ -231,7 +231,7 @@
                         </div>
                       
                         
-                        <button id="displayDataBtn" class="btn btn-primary" >Calculate</button>
+                        
 
                     </div>
                     <div class="carousel-item">
@@ -241,7 +241,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-9">
-                                    <select class="form-control primary-background border-0" id="misc-dropdown1" name="panel_profile" required>
+                                    <select class="form-control primary-background border-0 misc-dropdown" id="misc-dropdown1" name="panel_profile" required>
                                         <option value=""></option>
                                
                                     
@@ -250,7 +250,7 @@
                                         
                                         while ($row_misc = $result_misc->fetch_assoc()) { ?>
                                             
-                                            <option value="<?php echo $row_misc['name'] ?>" >
+                                            <option data-code ="<?php echo $row_misc['code'] ?>" value="<?php echo $row_misc['name'] ?>" >
 
                                                 <?php echo $row_misc['name'] ?>
                                                 
@@ -273,7 +273,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-9">
-                                    <select class="form-control primary-background border-0" id="misc-dropdown2" name="panel_profile" required>
+                                    <select class="form-control primary-background border-0 misc-dropdown" id="misc-dropdown2" name="panel_profile" required>
                                         <option value=""></option>
                                
                                     
@@ -282,7 +282,7 @@
                                         
                                         while ($row_misc = $result_misc->fetch_assoc()) { ?>
                                             
-                                            <option value="<?php echo $row_misc['name'] ?>" >
+                                            <option data-code ="<?php echo $row_misc['code'] ?>" value="<?php echo $row_misc['name'] ?>" >
 
                                                 <?php echo $row_misc['name'] ?>
                                                 
@@ -305,7 +305,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-9">
-                                    <select class="form-control primary-background border-0" id="misc-dropdown3" name="panel_profile" required>
+                                    <select class="form-control primary-background border-0 misc-dropdown" id="misc-dropdown3" name="panel_profile" required>
                                         <option value=""></option>
                                
                                     
@@ -314,7 +314,7 @@
                                         
                                         while ($row_misc = $result_misc->fetch_assoc()) { ?>
                                             
-                                            <option value="<?php echo $row_misc['name'] ?>" >
+                                            <option data-code ="<?php echo $row_misc['code'] ?>" value="<?php echo $row_misc['name'] ?>" >
 
                                                 <?php echo $row_misc['name'] ?>
                                                 
@@ -337,7 +337,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-9">
-                                    <select class="form-control primary-background border-0" id="misc-dropdown4" name="panel_profile" required>
+                                    <select class="form-control primary-background border-0 misc-dropdown" id="misc-dropdown4" class="misc-dropdown" name="panel_profile" required>
                                         <option value=""></option>
                                
                                     
@@ -346,7 +346,7 @@
                                         
                                         while ($row_misc = $result_misc->fetch_assoc()) { ?>
                                             
-                                            <option value="<?php echo $row_misc['name'] ?>" >
+                                            <option data-code ="<?php echo $row_misc['code'] ?>" value="<?php echo $row_misc['name'] ?>" >
 
                                                 <?php echo $row_misc['name'] ?>
                                                 
@@ -369,7 +369,7 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-9">
-                                    <select class="form-control primary-background border-0" id="misc-dropdown5" name="panel_profile" required>
+                                    <select class="form-control primary-background border-0 misc-dropdown" id="misc-dropdown5" name="panel_profile" required>
                                         <option value=""></option>
                                
                                     
@@ -378,7 +378,7 @@
                                         
                                         while ($row_misc = $result_misc->fetch_assoc()) { ?>
                                             
-                                            <option value="<?php echo $row_misc['name'] ?>" >
+                                            <option data-code ="<?php echo $row_misc['code'] ?>" value="<?php echo $row_misc['name'] ?>" >
 
                                                 <?php echo $row_misc['name'] ?>
                                                 
@@ -400,6 +400,7 @@
                         </div>
                         
 
+                    <button id="displayDataBtn" class="btn btn-primary" >Calculate</button>
                     </div>
                 
                 </div>
@@ -661,12 +662,15 @@ async function updateData() {
         
         total += await processTileSealent('paints', 'paints');
 
-        total += await processMisc('misc-dropdown1', 'CH');
+        total += await processMisc('misc-dropdown1', 'misc-input1');
 
-        total += await processMisc('misc-dropdown2', 'CH');
-        total += await processMisc('misc-dropdown3', 'CH');
-        total += await processMisc('misc-dropdown4', 'CH');
-        total += await processMisc('misc-dropdown5', 'CH');
+        total += await processMisc('misc-dropdown2', 'misc-input2');
+
+        total += await processMisc('misc-dropdown3', 'misc-input3');
+
+        total += await processMisc('misc-dropdown4', 'misc-input4');
+
+        total += await processMisc('misc-dropdown5', 'misc-input5');
 
         // Update total in the UI
         updateTotalInUI(total);
@@ -675,47 +679,49 @@ async function updateData() {
     }
 }
 
-async function processMisc(componentId, codeHeading) {
+async function processMisc(componentId, inputQty) {
+
     var profilePanel = document.getElementById('panel_profile');
     var selectedOptionProfilePanel = profilePanel.options[profilePanel.selectedIndex];
     var selectedValueProfilePanel = selectedOptionProfilePanel.value;
     var selectedDataIdProfilePanel = selectedOptionProfilePanel.getAttribute('data-id');
     var selectedCombinedProfilePanel = selectedOptionProfilePanel.getAttribute('data-combined');
     var selectedScrewValue = selectedOptionProfilePanel.getAttribute('data-screw');
-    var va = selectedValueProfilePanel / 12;
-    var request = sizeOfRoof.value / va;
-    var qty = parseFloat(request);
-    var userInput = $('#misc-input1').val();
+   
+    var qty =  $('#' + inputQty).val();;
+    var component = $('#' + componentId+' option:selected');
+
+    // Fetch the value of the data-code attribute
+    var code = component.data('code');
+      
     var profilePanelSize = $('#panel_profile').val();
     var guage = $('#guage').val();
     var colors = $('#colors').val();
-        
-       var  sealentQty =    calculateSealentQty(qty,);
+    var sku = '';
     
-         sealentQty = roundNumber(sealentQty);
-
+    if (code == 'CH' || code == 'GF' || code == 'FG' || code == 'HS') {
         
-            var response = await fetchProfileCode(selectedDataIdProfilePanel, codeHeading);
-           
-            if (response.success) {
-                var sku = response.code+guage+colors;
-                
+        var response = await fetchProfileCode(selectedDataIdProfilePanel, code);
+        sku = response.code+guage+colors; 
+    }else{
+       sku = code;
+    }
+     
+
+              
                    
-                var totalPriceResponse = await fetchReceiptValue(sku, userInput);
+    var totalPriceResponse = await fetchReceiptValue(sku, qty);
 
-                if (totalPriceResponse.success) {
-                    var totalPrice = parseFloat(totalPriceResponse.totalPrice);
-                    appendDataRow(userInput, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
-                    return totalPrice;
-                } else {
+    if (totalPriceResponse.success) {
+        var totalPrice = parseFloat(totalPriceResponse.totalPrice);
+        appendDataRow(qty, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
+        return totalPrice;
+    } else {
 
-                    console.error('Failed to fetch item data for ' + componentId);
-                }
-            } else {
-                console.error('Failed to fetch profile code for ' + componentId);
-            }
+        console.error('Failed to fetch item data for ' + componentId);
+    }
+             
          
-   
 
     return 0;
 }

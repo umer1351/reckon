@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 22, 2024 at 07:19 PM
+-- Generation Time: May 06, 2024 at 12:52 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -8726,6 +8726,36 @@ INSERT INTO `login` (`id`, `name`, `username`, `password`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `misc_data`
+--
+
+CREATE TABLE `misc_data` (
+  `id` int(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `misc_data`
+--
+
+INSERT INTO `misc_data` (`id`, `name`, `code`) VALUES
+(1, 'Inside Closures', 'ISCT'),
+(2, '# 1 Retrofit Boot', 'RB1'),
+(3, '# 3 Lt Gray Pipe Boots', 'PB3'),
+(4, '# 5 Pipe Boots', 'PB5'),
+(5, '# 6 Pipe Boots', 'PB6'),
+(6, '# 7 Pipe Boots', 'PB7'),
+(7, '# 8 Pipe Boots', 'PB8'),
+(8, 'High Side Cap', 'HS'),
+(9, 'Chimney Flashing', 'CH'),
+(10, 'Flying Gable', 'FG'),
+(11, 'Gambrel Flashing', 'GF'),
+(12, '1x4 Southern Yellow Pine', '1412SYP');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `paints`
 --
 
@@ -8770,7 +8800,6 @@ INSERT INTO `profile_codes` (`id`, `profile_panel_id`, `code_heading`, `code`) V
 (8, 6, 'ED', 'EDS1'),
 (9, 7, 'ED', 'EDS1'),
 (10, 8, 'ED', 'EDS1'),
-(11, 9, 'ED', 'EDS1'),
 (12, 10, 'ED', 'EDS1'),
 (13, 11, 'ED', 'EDS1'),
 (14, 12, 'ED', 'EDS1'),
@@ -8857,7 +8886,79 @@ INSERT INTO `profile_codes` (`id`, `profile_panel_id`, `code_heading`, `code`) V
 (95, 9, 'HC', 'RCS1'),
 (96, 10, 'HC', 'RCS1'),
 (97, 11, 'HC', 'RCS1'),
-(98, 12, 'HC', 'RCS1');
+(98, 12, 'HC', 'RCS1'),
+(100, 1, 'Vented', 'LP2T'),
+(101, 2, 'Vented', 'PFVV'),
+(102, 3, 'Vented', 'PFVP'),
+(103, 4, 'Vented', 'SZP16'),
+(104, 5, 'Vented', 'SZM15'),
+(105, 6, 'Vented', 'SZM15'),
+(106, 7, 'Vented', 'SZD14'),
+(107, 8, 'Vented', 'SZD16'),
+(108, 9, 'Vented', 'SZD18'),
+(109, 10, 'Vented', 'SZM16'),
+(110, 11, 'Vented', 'SZH16'),
+(111, 12, 'Vented', 'SZH18'),
+(112, 1, 'woodzac', 'WZ'),
+(113, 2, 'woodzac', 'WZ'),
+(114, 3, 'woodzac', 'WZ'),
+(115, 1, 'woodzip', 'WP'),
+(116, 2, 'woodzip', 'WP'),
+(117, 3, 'woodzip', 'WP'),
+(118, 1, 'paints', 'TB'),
+(119, 2, 'paints', 'TB'),
+(120, 3, 'paints', 'TB'),
+(121, 4, 'paints', 'TB'),
+(122, 5, 'paints', 'TB'),
+(123, 6, 'paints', 'TB'),
+(124, 7, 'paints', 'TB'),
+(125, 8, 'paints', 'TB'),
+(126, 9, 'paints', 'TB'),
+(127, 10, 'paints', 'TB'),
+(128, 11, 'paints', 'TB'),
+(129, 12, 'paints', 'TB'),
+(130, 1, 'CH', 'CHU1'),
+(131, 2, 'CH', 'CHU1'),
+(132, 3, 'CH', 'CHU1'),
+(133, 4, 'CH', 'CHU1'),
+(134, 5, 'CH', 'CHU1'),
+(135, 6, 'CH', 'CHU1'),
+(136, 7, 'CH', 'CHU1'),
+(137, 8, 'CH', 'CHU1'),
+(138, 9, 'CH', 'CHU1'),
+(139, 10, 'CH', 'CHU1'),
+(140, 11, 'CH', 'CHU1'),
+(141, 12, 'CH', 'CHU1'),
+(142, 7, 'HS', 'HSD1'),
+(143, 8, 'HS', 'HSD1'),
+(144, 9, 'HS', 'HSD1'),
+(145, 4, 'HS', 'HSP1'),
+(146, 3, 'HS', 'HSR1'),
+(147, 1, 'HS', 'HST1'),
+(148, 1, 'FG', 'FGE1'),
+(149, 2, 'FG', 'FGE1'),
+(150, 3, 'FG', 'FGE1'),
+(151, 4, 'FG', 'FGS1'),
+(152, 5, 'FG', 'FGS1'),
+(153, 6, 'FG', 'FGS1'),
+(154, 7, 'FG', 'FGS1'),
+(155, 8, 'FG', 'FGS1'),
+(156, 9, 'FG', 'FGS1'),
+(157, 10, 'FG', 'FGS1'),
+(158, 11, 'FG', 'FGS1'),
+(159, 12, 'FG', 'FGS1'),
+(160, 1, 'GF', 'GFE1'),
+(161, 2, 'GF', 'GFE1'),
+(162, 3, 'GF', 'GFE1'),
+(163, 4, 'GF', 'GFS1'),
+(164, 5, 'GF', 'GFS1'),
+(165, 6, 'GF', 'GFS1'),
+(166, 7, 'GF', 'GFS1'),
+(167, 8, 'GF', 'GFS1'),
+(168, 10, 'GF', 'GFS1'),
+(169, 11, 'GF', 'GFS1'),
+(170, 12, 'GF', 'GFS1'),
+(171, 9, 'GF', 'GFS1');
 
 -- --------------------------------------------------------
 
@@ -8901,6 +9002,7 @@ CREATE TABLE `sku_codes` (
   `description` varchar(255) NOT NULL,
   `code` varchar(11) NOT NULL,
   `size` int(11) NOT NULL,
+  `screw_values` float NOT NULL,
   `combined_shortcode` varchar(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -8908,19 +9010,19 @@ CREATE TABLE `sku_codes` (
 -- Dumping data for table `sku_codes`
 --
 
-INSERT INTO `sku_codes` (`id`, `name`, `description`, `code`, `size`, `combined_shortcode`) VALUES
-(1, 'TUFFRIB', 'TUFFRIB', 'TR', 36, 'TR36'),
-(2, '5V', '5V', '5V', 24, '5V24'),
-(3, 'PBR', 'PBR', 'PB', 36, 'PB36'),
-(4, 'PermaShield100x16', 'PERMA LOW', 'PL', 16, 'PL16'),
-(5, 'PermaShield150x15', 'PERMA HIGH', 'PH', 15, 'PH15'),
-(6, 'DuraSeam150x15', 'DURA LOW', 'DL', 15, 'DL15'),
-(7, 'DuraSeam175x14', 'DURASM H14', 'DH', 14, 'DH14'),
-(8, 'DuraSeam175x16', 'DURASM H16', 'DH', 16, 'DH16'),
-(9, 'DuraSeam175x18', 'DURASM H18', 'DH', 18, 'DH18'),
-(10, 'MasterSeam150x16', 'MSTRSM LOW', 'ML', 16, 'ML16'),
-(11, 'MasterSeam200x16', 'MSTRSM H16', 'MH', 16, 'MH16'),
-(12, 'MasterSeam200x18', 'MSTRSM H18', 'MH', 18, 'MH18');
+INSERT INTO `sku_codes` (`id`, `name`, `description`, `code`, `size`, `screw_values`, `combined_shortcode`) VALUES
+(1, 'TUFFRIB', 'TUFFRIB', 'TR', 36, 2.7, 'TR36'),
+(2, '5V', '5V', '5V', 24, 2.3, '5V24'),
+(3, 'PBR', 'PBR', 'PB', 36, 1.9, 'PB36'),
+(4, 'PermaShield100x16', 'PERMA LOW', 'PL', 16, 2.3, 'PL16'),
+(5, 'PermaShield150x15', 'PERMA HIGH', 'PH', 15, 2.3, 'PH15'),
+(6, 'DuraSeam150x15', 'DURA LOW', 'DL', 15, 0, 'DL15'),
+(7, 'DuraSeam175x14', 'DURASM H14', 'DH', 14, 0, 'DH14'),
+(8, 'DuraSeam175x16', 'DURASM H16', 'DH', 16, 0, 'DH16'),
+(9, 'DuraSeam175x18', 'DURASM H18', 'DH', 18, 0, 'DH18'),
+(10, 'MasterSeam150x16', 'MSTRSM LOW', 'ML', 16, 0, 'ML16'),
+(11, 'MasterSeam200x16', 'MSTRSM H16', 'MH', 16, 0, 'MH16'),
+(12, 'MasterSeam200x18', 'MSTRSM H18', 'MH', 18, 0, 'MH18');
 
 -- --------------------------------------------------------
 
@@ -8966,7 +9068,10 @@ INSERT INTO `users` (`id`, `user_name`, `user_role`, `name`, `sex`, `phone`, `em
 (1, 'admin', 1, 'Admin', 'male', 123456789, 'admin@admin.com', 'avatar.png', '$2y$10$uzbUkeE1yURbX08Es9FccOmJewf.FMiPAHA2V5pCqbmJtrhlQUcUe', 'Test Company', 'Test Job', 'Test Address', 'Test City', 'Test State', 'admin@123', '661ad8613515f.jpg'),
 (26, 'elon', 2, 'Elon Musk', 'male', 8777569824, 'elon@gmail.com', 'avatar.png', '', '', '', '', '', '', '', ''),
 (27, 'umer', 2, 'Umer', 'male', 1234, '123@g.com', 'avatar.png', '', '', '', '', '', '', '', ''),
-(49, 'admin1234', 2, 'John', 'male', 3024688336, 'umer.rehman996@gmail.com12345', 'avatar.png', '$2y$10$N.lMdbzU/C3W0bJx22FODOEtZgbGaDVkXcthGAz.63AjNMYpqHAJW', 'Softech', '123', '955-L Johar Town Lahore', 'Lahore', 'Punjab', 'admin@123', '662622a32c084.jpg');
+(49, 'admin1234', 2, 'John', 'male', 3024688336, 'umer.rehman996@gmail.com12345', 'avatar.png', '$2y$10$N.lMdbzU/C3W0bJx22FODOEtZgbGaDVkXcthGAz.63AjNMYpqHAJW', 'Softech', '123', '955-L Johar Town Lahore', 'Lahore', 'Punjab', 'admin@123', '662622a32c084.jpg'),
+(50, 'admin444', 2, 'John', 'male', 12345, 'y@k.bom', 'avatar.png', '$2y$10$.mw.8uccUnsH27ls6jRcbOshlhpxT1C5SGaXkb3eyufRSH53H0S22', 'qwrty', 'qwer', 'qwer', 'qwerr', 'qw', 'gg', '6626e0b794d6d.jpg'),
+(51, 'admin0987', 2, 'John', 'male', 3024688336, 'umer.rehman996@gmail.com987', 'avatar.png', '$2y$10$u5ad7xchndFwZ5LbbqvDLO6rWwMB9Qa8KTZNnbKCAbDh0X.z0oO7y', 'Softech', 'test', '955-L Johar Town Lahore', 'Lahore', 'iop', '54000', '6626e1ce4e86b.png'),
+(52, 'adminpo', 2, 'John', 'male', 3024688336, 'umer.rehman996@gmail.com90', 'avatar.png', '$2y$10$2wYwKCU14MwxDjNsmfcL5uXcBJXN3AVSfMIucdp1nzPRuiRUw9i7O', 'Softech', 'test', '955-L Johar Town Lahore', 'Lahore', 'Punjab', '54000', '6626e283e2096.png');
 
 -- --------------------------------------------------------
 
@@ -9059,6 +9164,12 @@ ALTER TABLE `item_list_types`
 -- Indexes for table `login`
 --
 ALTER TABLE `login`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `misc_data`
+--
+ALTER TABLE `misc_data`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -9162,6 +9273,12 @@ ALTER TABLE `login`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `misc_data`
+--
+ALTER TABLE `misc_data`
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT for table `paints`
 --
 ALTER TABLE `paints`
@@ -9171,7 +9288,7 @@ ALTER TABLE `paints`
 -- AUTO_INCREMENT for table `profile_codes`
 --
 ALTER TABLE `profile_codes`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=172;
 
 --
 -- AUTO_INCREMENT for table `roles`
@@ -9189,7 +9306,7 @@ ALTER TABLE `sale_tax_codes`
 -- AUTO_INCREMENT for table `sku_codes`
 --
 ALTER TABLE `sku_codes`
-  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(255) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT for table `tax_agencies`
@@ -9201,7 +9318,7 @@ ALTER TABLE `tax_agencies`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT for table `vendors`
