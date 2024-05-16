@@ -11,7 +11,13 @@ if (isset($_POST['tableHTML'])) {
         $mpdf = new \Mpdf\Mpdf();
 
         // Write HTML content (your table) to PDF
-        $mpdf->WriteHTML($tableHTML);
+       $logoHTML = '<img src="uploads/logo-instaquoter.png" alt="Logo">';
+
+        // Concatenate the logo HTML with the table HTML
+        $tableHTMLWithLogo = $logoHTML . $tableHTML;
+
+        // Write HTML content (table with logo) to PDF
+        $mpdf->WriteHTML($tableHTMLWithLogo);
 
     
         // Specify the output filename and path
