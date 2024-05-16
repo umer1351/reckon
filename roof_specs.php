@@ -3,8 +3,11 @@
         require 'templates/header.php';
         require 'templates/navbar.php';
         include 'php/roofSpecs.php';
+        
 
 ?>
+
+
     
 <div class="container-fluid primary-background">
     
@@ -520,7 +523,9 @@
                     <!-- Calculation results will be populated here -->
                     </tbody>
                 </table>
-            </div>  
+                <button type="button" onclick="generatePDF()">Generate PDF</button>
+            </div> 
+
 
         </div>
 
@@ -555,6 +560,30 @@
 
 <script type="text/javascript">
     
+
+
+    function generatePDF() {
+    // Create a new FormData object containing the HTML of the table
+        var formData = new FormData();
+        formData.append('tableHTML', document.getElementById('calculationTable').outerHTML);
+
+        // AJAX call to send the table HTML to the PHP script for PDF generation
+        $.ajax({
+            url: 'generate_pdf.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                console.log('PDF generated successfully:', response);
+                window.location.href = 'download_pdf.php';
+                // Optionally, you can provide a link to download the PDF or handle it as needed
+            },
+            error: function(xhr, status, error) {
+                console.error('Error generating PDF:', error);
+            }
+        });
+    }
 
         $('#profile_panel').DataTable({
             pageLength : 20
