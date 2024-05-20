@@ -1477,25 +1477,25 @@ function roundNumber(number) {
     $('#displayDataBtn').on('click ', function() {
         var allInputsFilled = true;
 
-        updateData();
+        // updateData();
         // Check if select elements have values
-        // $('select').each(function() {
-        //     if ($(this).val() === '') {
-        //         allInputsFilled = false;
-        //         return false; // exit the loop early
-        //     }
-        // });
+        $('select').each(function() {
+            if ($(this).val() === '') {
+                allInputsFilled = false;
+                return false; // exit the loop early
+            }
+        });
 
     
 
-        // if (allInputsFilled) {
-        //     updateData();
+        if (allInputsFilled) {
+            updateData();
             
-        // } else {
-        //    // alert();
-        //     // Display modal
-        //     $('#validationModal').modal('show');
-        // }
+        } else {
+           // alert();
+            // Display modal
+            $('#validationModal').modal('show');
+        }
     
 
         
