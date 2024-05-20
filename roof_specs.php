@@ -68,7 +68,7 @@
                         <h4 class="justify-content-left secondary-heading mb-md-3 fs-5"> <span class="form-steps">STEP 2:</span> ROOF PANEL AND FINISH</h4>
 
                         <div class="form-group">
-                            <input type="number" placeholder="Size Of Roof" class="form-control primary-background border-0" value="2000" id="sizeOfRoof" name="input2" required>
+                            <input type="number" placeholder="Size Of Roof" class="form-control primary-background border-0" value=" " id="sizeOfRoof" name="input2" required>
                         </div>
 
                         <div class="form-group">
@@ -264,7 +264,7 @@
                                      </select>
                                 </div>
                                 <div class="col-3">
-                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value="2000" id="misc-input1" name="input2" required>
+                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value=" " id="misc-input1" name="input2" required>
 
                                 </div>
                                 
@@ -296,7 +296,7 @@
                                      </select>
                                 </div>
                                 <div class="col-3">
-                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value="2000" id="misc-input2" name="input2" required>
+                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value=" " id="misc-input2" name="input2" required>
 
                                 </div>
                                 
@@ -328,7 +328,7 @@
                                      </select>
                                 </div>
                                 <div class="col-3">
-                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value="2000" id="misc-input3" name="input2" required>
+                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value=" " id="misc-input3" name="input2" required>
 
                                 </div>
                                 
@@ -360,7 +360,7 @@
                                      </select>
                                 </div>
                                 <div class="col-3">
-                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value="2000" id="misc-input4" name="input2" required>
+                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value=" " id="misc-input4" name="input2" required>
 
                                 </div>
                                 
@@ -392,7 +392,7 @@
                                      </select>
                                 </div>
                                 <div class="col-3">
-                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value="2000" id="misc-input5" name="input2" required>
+                                     <input type="number" placeholder="Size Of Roof" class="misc-input form-control primary-background border-0" value=" " id="misc-input5" name="input2" required>
 
                                 </div>
                                 
@@ -682,6 +682,11 @@ async function updateData() {
         // Process hip
         total += await processComponent('hip', 'HC');
 
+        total += await processOSC('panel_profile', 'OSC');
+
+        total += await processISC('panel_profile', 'ISC');
+
+        total += await processButyl('panel_profile', 'BU');
         
         total += await processVented('Vented', 'Vented');
 
@@ -706,6 +711,115 @@ async function updateData() {
     } catch (error) {
         console.error('Error:', error);
     }
+}
+
+
+async function processButyl(componentId, codeHeading) {
+   
+   
+        var qty = 0;
+        var bQty=0;
+        var profilePanel = document.getElementById('panel_profile');
+        var vented = document.getElementById('Vented');
+        var ridge = document.getElementById('ridge').value;
+        var hip = document.getElementById('hip').value;
+        var eave = document.getElementById('eave').value;
+        var valley = document.getElementById('valley').value;
+        var rake = document.getElementById('rake').value;
+        var endwall = document.getElementById('endwall').value;
+        var flashing = document.getElementById('flashing').value;
+        var transition = document.getElementById('transition').value;
+        var selectedVented = vented.value;
+        var selectedOptionProfilePanel = profilePanel.options[profilePanel.selectedIndex];
+        var selectedDataIdProfilePanel = selectedOptionProfilePanel.getAttribute('data-id');
+
+        try {
+
+            var response = await fetchProfileCode(selectedDataIdProfilePanel, codeHeading);
+            if (response.success) {
+                var profileCode = response.code;
+                var sku = profileCode;
+
+                if (selectedVented == 'Non Vented' && ridge != '') {
+                    
+                    bQty += (ridge*2)/45;
+                
+                }
+
+                if(hip != ''){
+
+                    bQty += (hip*2)/45;
+
+                }
+
+
+                if(eave != ''){
+
+                    bQty += (eave*0)/45;
+
+                }
+
+
+                if(valley != ''){
+
+                    bQty += (valley*2)/45;
+
+                }
+
+                if(rake != ''){
+
+                    bQty += (rake*1)/45;
+
+                }
+
+                if(endwall != ''){
+
+                    bQty += (endwall*1)/45;
+
+                }
+
+                 if(flashing != ''){
+
+                    bQty += (flashing*1)/45;
+
+                } 
+                if(transition != ''){
+
+                    bQty += (transition*0)/45;
+
+                }
+                bQty = roundNumber(bQty);
+
+                var totalPriceResponse = await fetchReceiptValue(sku, bQty);
+                // alert(totalPriceResponse.price);
+                if (totalPriceResponse.success) {
+                    var totalPrice = parseFloat(totalPriceResponse.totalPrice);
+                    appendDataRow(bQty, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
+                    return totalPrice;
+                } else {
+
+                    console.error('Failed to fetch item data for ' + componentId);
+                }
+            } else {
+                console.error('Failed to fetch profile code for ' + componentId);
+            }
+        } catch (error) {
+
+            // console.error('Error:', error);
+            var newRow = '<tr style="color:red;">';
+            newRow += '<td>-</td>';
+            newRow += '<td>'+sku+'</td>';
+            newRow += '<td>Call For Pricing</td>';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '</tr>';
+
+            // Append the new row to the table body
+            $('#dataBody').append(newRow);
+        
+    }
+
+    return 0;
 }
 
 async function processMisc(componentId, inputQty) {
@@ -806,12 +920,13 @@ async function processTileSealent(componentId, codeHeading) {
 
 async function processVented(componentId, codeHeading) {
 
-    var userInput = $('#ridge').val()*12;
+    var userInput = $('#ridge').val();
     var profilePanelSize = $('#panel_profile').val();
-        userInput=userInput*2;
-    var qty =    userInput/profilePanelSize;
+        // userInput=userInput*2*1.05;
+    // var qty =    userInput/profilePanelSize;
+    var qty  = 0;
     if (userInput) {
-        qty = roundNumber(qty);
+       
         var profilePanel = document.getElementById('panel_profile');
         var selectedOptionProfilePanel = profilePanel.options[profilePanel.selectedIndex];
         var selectedDataIdProfilePanel = selectedOptionProfilePanel.getAttribute('data-id')
@@ -821,7 +936,30 @@ async function processVented(componentId, codeHeading) {
            
             if (response.success) {
                 var sku = response.code
+                if (sku == 'LP2T') {
+                  userInput = userInput*12;
+                  userInput =  Math.ceil(userInput/profilePanelSize) * profilePanelSize;
+                  userInput =  userInput / profilePanelSize;
+                  qty = userInput* 2;
 
+                }
+
+                else if (sku == 'PFVV') {
+                    
+                    qty=Math.ceil(2 * userInput/10)*10;
+
+                }
+                else if(sku == 'PFVR'){
+                    
+                    qty=Math.ceil(2 * userInput/10)*10;
+                
+                }else{
+
+                     userInput=(userInput*2*1.05)*12;
+                     qty = userInput/profilePanelSize;
+                     qty = roundNumber(qty);
+
+                }
                 var totalPriceResponse = await fetchReceiptValue(sku, qty);
 
                 if (totalPriceResponse.success) {
@@ -896,6 +1034,248 @@ async function processFastner(componentId, codeHeading) {
                 }
            
        
+    }
+
+    return 0;
+}
+
+async function processOSC(componentId, codeHeading) {
+    
+        var bQty=0;
+        var profilePanel = document.getElementById('panel_profile');
+        var vented = document.getElementById('Vented');
+        var ridge = document.getElementById('ridge').value;
+        var hip = document.getElementById('hip').value;
+        var eave = document.getElementById('eave').value;
+        var valley = document.getElementById('valley').value;
+        var rake = document.getElementById('rake').value;
+        var endwall = document.getElementById('endwall').value;
+        var flashing = document.getElementById('flashing').value;
+        var transition = document.getElementById('transition').value;
+        var profilePanel = document.getElementById('panel_profile');
+        var selectedVented = vented.value;
+        var selectedOptionProfilePanel = profilePanel.options[profilePanel.selectedIndex];
+        var selectedDataIdProfilePanel = selectedOptionProfilePanel.getAttribute('data-id');
+
+
+
+
+
+        try {
+            var response = await fetchProfileCode(selectedDataIdProfilePanel, codeHeading);
+            if (response.success) {
+                var profileCode = response.code;
+                var sku = profileCode;
+
+                if (selectedVented == 'Non Vented' && ridge != '') {
+                    
+                    
+                    if (selectedDataIdProfilePanel == 2) {
+                        bQty += ((ridge/10)*10)+1;
+                    }else{
+                        bQty += ((ridge/10)*6.66667)+1;
+                    }
+
+                
+                }
+
+                if(hip != ''){
+
+                    bQty += (hip*0)/45;
+
+                }
+
+
+                if(eave != ''){
+
+                    bQty += (eave*0)/45;
+
+                }
+
+
+                if(valley != ''){
+
+                    bQty += (valley*0)/45;
+
+                }
+
+                if(rake != ''){
+
+                    bQty += (rake*0)/45;
+
+                }
+
+                if(endwall != ''){
+
+                    if (selectedDataIdProfilePanel == 2) {
+                        bQty += ((endwall/10)*5)+1; 
+                    }else{
+                        bQty += ((endwall/10)*3.33)+1;
+                    }
+
+                }
+
+                 if(flashing != ''){
+
+                    bQty += (flashing*0)/45;
+
+                } 
+                if(transition != ''){
+
+                    if (selectedDataIdProfilePanel == 2) {
+                        bQty += ((transition/10)*5)+1; 
+                    }else{
+                        bQty += ((transition/10)*3.33)+1;
+                    }
+
+                }
+
+                bQty = roundNumber(bQty);
+                bQty = bQty+1;
+                var totalPriceResponse = await fetchReceiptValue(sku, bQty);
+                // alert(totalPriceResponse.price);
+                if (totalPriceResponse.success) {
+                    var totalPrice = parseFloat(totalPriceResponse.totalPrice);
+                    appendDataRow(bQty, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
+                    return totalPrice;
+                } else {
+
+                    console.error('Failed to fetch item data for ' + componentId);
+                }
+            } else {
+                console.error('Failed to fetch profile code for ' + componentId);
+            }
+        } catch (error) {
+
+            // console.error('Error:', error);
+            var newRow = '<tr style="color:red;">';
+            newRow += '<td>-</td>';
+            newRow += '<td>'+sku+'</td>';
+            newRow += '<td>Call For Pricing</td>';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '</tr>';
+
+            // Append the new row to the table body
+            $('#dataBody').append(newRow);
+        
+    }
+
+    return 0;
+}
+
+async function processISC(componentId, codeHeading) {
+    
+        var bQty=0;
+        var profilePanel = document.getElementById('panel_profile');
+        var vented = document.getElementById('Vented');
+        var ridge = document.getElementById('ridge').value;
+        var hip = document.getElementById('hip').value;
+        var eave = document.getElementById('eave').value;
+        var valley = document.getElementById('valley').value;
+        var rake = document.getElementById('rake').value;
+        var endwall = document.getElementById('endwall').value;
+        var flashing = document.getElementById('flashing').value;
+        var transition = document.getElementById('transition').value;
+        var profilePanel = document.getElementById('panel_profile');
+        var selectedVented = vented.value;
+        var selectedOptionProfilePanel = profilePanel.options[profilePanel.selectedIndex];
+        var selectedDataIdProfilePanel = selectedOptionProfilePanel.getAttribute('data-id');
+
+
+
+
+
+        try {
+            var response = await fetchProfileCode(selectedDataIdProfilePanel, codeHeading);
+            if (response.success) {
+                var profileCode = response.code;
+                var sku = profileCode;
+
+                if (selectedVented == 'Non Vented' && ridge != '') {
+                    
+                    bQty += ((ridge/10)*0);
+                
+                }
+
+                if(hip != ''){
+
+                    bQty += (hip*0)/45;
+
+                }
+
+
+                if(eave != ''){
+
+                    bQty += (eave*0)/45;
+
+                }
+
+
+                if(valley != ''){
+
+                    bQty += (valley*0)/45;
+
+                }
+
+                if(rake != ''){
+
+                    bQty += (rake*0)/45;
+
+                }
+
+                if(endwall != ''){
+
+                    bQty += ((endwall/10)*0);
+
+                }
+
+                 if(flashing != ''){
+
+                    bQty += (flashing*0)/45;
+
+                } 
+                if(transition != ''){
+
+                    if (selectedDataIdProfilePanel == 2) {
+                        bQty += ((transition/10)*5)+1; 
+                    }else{
+                        bQty += ((transition/10)*3.33)+1;
+                    }
+
+                    
+
+                }
+
+                bQty = roundNumber(bQty);
+                bQty = bQty;
+                var totalPriceResponse = await fetchReceiptValue(sku, bQty);
+                // alert(totalPriceResponse.price);
+                if (totalPriceResponse.success) {
+                    var totalPrice = parseFloat(totalPriceResponse.totalPrice);
+                    appendDataRow(bQty, sku, totalPriceResponse.description, totalPriceResponse.price, totalPrice);
+                    return totalPrice;
+                } else {
+
+                    console.error('Failed to fetch item data for ' + componentId);
+                }
+            } else {
+                console.error('Failed to fetch profile code for ' + componentId);
+            }
+        } catch (error) {
+
+            // console.error('Error:', error);
+            var newRow = '<tr style="color:red;">';
+            newRow += '<td>-</td>';
+            newRow += '<td>'+sku+'</td>';
+            newRow += '<td>Call For Pricing</td>';
+            newRow += '<td>-</td>';
+            newRow += '<td>-</td>';
+            newRow += '</tr>';
+
+            // Append the new row to the table body
+            $('#dataBody').append(newRow);
+        
     }
 
     return 0;
@@ -1097,24 +1477,25 @@ function roundNumber(number) {
     $('#displayDataBtn').on('click ', function() {
         var allInputsFilled = true;
 
+        updateData();
         // Check if select elements have values
-        $('select').each(function() {
-            if ($(this).val() === '') {
-                allInputsFilled = false;
-                return false; // exit the loop early
-            }
-        });
+        // $('select').each(function() {
+        //     if ($(this).val() === '') {
+        //         allInputsFilled = false;
+        //         return false; // exit the loop early
+        //     }
+        // });
 
     
 
-        if (allInputsFilled) {
-            updateData();
+        // if (allInputsFilled) {
+        //     updateData();
             
-        } else {
-           // alert();
-            // Display modal
-            $('#validationModal').modal('show');
-        }
+        // } else {
+        //    // alert();
+        //     // Display modal
+        //     $('#validationModal').modal('show');
+        // }
     
 
         
